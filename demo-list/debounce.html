@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>debounce</title>
+  </head>
+  <body>
+    <input type="text" id="input" />
+    <script>
+      // 防抖：可以和你的电脑设定了10分钟睡眠时间的场景结合起来理解
+      // 如果你一直在用电脑，那么电脑就不会睡眠（频繁的把前一个定时器关掉，开启新的定时器）
+      // 当你最后一次没操作电脑10分钟之后，电脑陷入睡眠
+      function debounce(func, delay, immediate) {
+        let timer = null;
+
+        return function (...args) {
+          console.log(`document.getElementById('input') === this:`, document.getElementById('input') === this);
+          // 如果已经设定过定时器就清空上一次的定时器
+          if (timer) clearTimeout(timer);
+
+          // ------ 新增部分 start ------
+          // immediate 为 true 表示第一次触发后执行
+          // timer 为空表示首次触发
+          if (!timer && immediate) {
+            console.log('args 3:', args);
+            console.log('this 3:', this);
+            func.apply(this, args);
+          }
+          // ------ 新增部分 end ------
+
+          timer = setTimeout(() => {
+            console.log('args 2:', args);
+            console.log('this 2:', this);
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+
+      const showName = debounce(
+        (...params) => {
+          console.log('this 1:', this);
+          console.log('打印:', document.getElementById('input').value, this, params);
+        },
+        300,
+        true
+      );
+
+      document.getElementById('input').addEventListener('input', e => {
+        showName.call({ name: '前端胖头鱼', age: 33 }, '前端胖头鱼', 33);
+        // showName.call(null, '前端胖头鱼');
+      });
+      // document.getElementById('input').addEventListener('input', () => {
+      //   showName(1, 2, 3);
+      // });
+    </script>
+  </body>
+</html>
