@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="todo in todos" v-if="todo.isComplete">{{ todo }}</li>
+      </ul>
+      <hr />
+      <ul>
+        <li v-for="todo in todosCompleted">{{ todo }}</li>
+      </ul>
+    </div>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data() {
+          return {
+            todos: [
+              { name: 1, isComplete: true },
+              { name: 2, isComplete: false },
+              { name: 3, isComplete: true },
+              { name: 4, isComplete: false },
+              { name: 5, isComplete: true },
+              { name: 6, isComplete: false }
+            ]
+          };
+        },
+        computed: {
+          todosCompleted() {
+            return this.todos.filter(item => {
+              return !item.isComplete;
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
