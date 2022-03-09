@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class MyPromise {
+        static pending = 'pending';
+        static fullfilled = 'fullfilled';
+        static rejected = 'rejected';
+
+        constructor(func) {
+          console.log('func 0:', func);
+          this.promiseState = MyPromise.pending;
+          this.promiseResult = null;
+          this.fullfilledCbs = [];
+          this.rejectedCbs = [];
+          func(this.resolve.bind(this), this.rejected.bind(this));
+        }
+
+        resolve(result) {
+          if (this.promiseState === MyPromise.pending) {
+            this.promiseState = MyPromise.fullfilled;
+            this.promiseResult = result;
+
+            this.fullfilledCbs.forEach(item => {
+              item(result);
+            });
+          }
+        }
+
+        rejected(errorObj) {
+          if (this.promiseState === MyPromise.pending) {
+            this.promiseState = MyPromise.rejected;
+            this.promiseResult = errorObj;
+
+            this.rejectedCbs.forEach(item => {
+              item(errorObj);
+            });
+          }
+        }
+
+        then(onFullfilled, onRejected) {
+          if (this.promiseState === MyPromise.pending) {
+            this.fullfilledCbs.push(onFullfilled);
+            this.rejectedCbs.push(onRejected);
+          }
+          if (this.promiseState === MyPromise.fullfilled) {
+            onFullfilled(this.promiseResult);
+          }
+          if (this.promiseState === MyPromise.rejected) {
+            onRejected(this.promiseResult);
+          }
+        }
+      }
+
+      // 测试用例
+      let p = new MyPromise((resolve, reject) => {
+        console.log('resolve:', resolve);
+        console.log('reject:', reject);
+        setTimeout(() => {
+          console.log('timeout');
+          resolve(1000);
+        }, 1000);
+      });
+
+      console.log('p:', p);
+
+      p.then(
+        x => {
+          console.log('x', x);
+        },
+        e => {
+          console.log('e', e);
+        }
+      );
+    </script>
+  </body>
+</html>

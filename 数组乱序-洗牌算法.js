@@ -22,9 +22,10 @@ function shuffleFn(arr) {
     m -= 1;
     console.log('m index:', m, index);
     console.log('------------');
-    // [arr[m], arr[index]] = [arr[index], arr[m]];
-    arr[m] = arr[index];
-    arr[index] = arr[m];
+    [arr[m], arr[index]] = [arr[index], arr[m]];
+    // const temp = arr[m];
+    // arr[m] = arr[index];
+    // arr[index] = temp;
   }
   return arr;
 }
