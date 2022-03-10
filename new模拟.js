@@ -24,6 +24,7 @@ function _new(func, ...args) {
   let obj = new Ctor()
  */
 
+  // 模拟
   let Ctor = function () {};
   Ctor.prototype = func.prototype; // Ctor.prototype === Person.prototype
   Ctor.prototype.constructor = func; // Ctor.prototype.constructor === Person

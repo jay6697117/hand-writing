@@ -27,20 +27,15 @@
         }]
     */
 
-      function getChild(data, res, pid) {
+      function getChild(data, pid, result = []) {
         for (const item of data) {
           if (item.pid === pid) {
             const temp = { ...item, child: [] };
-            res.push(temp);
-            getChild(data, temp.child, item.id);
+            result.push(temp);
+            getChild(data, item.id, temp.child, true);
           }
         }
-      }
-
-      function trans(data, pid) {
-        const res = [];
-        getChild(data, res, pid);
-        return res;
+        return result;
       }
 
       let arr = [
@@ -52,7 +47,7 @@
         { id: 6, name: 'david', pid: 4 }
       ];
 
-      const res = trans(arr, 0);
+      const res = getChild(arr, 0);
       console.log('res:\n', res);
     </script>
   </body>
