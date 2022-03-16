@@ -46,8 +46,12 @@
 
         then(onFullfilled, onRejected) {
           if (this.promiseState === MyPromise.pending) {
-            this.fullfilledCbs.push(onFullfilled);
-            this.rejectedCbs.push(onRejected);
+            if (onFullfilled) {
+              this.fullfilledCbs.push(onFullfilled);
+            }
+            if (onRejected) {
+              this.rejectedCbs.push(onRejected);
+            }
           }
           if (this.promiseState === MyPromise.fullfilled) {
             onFullfilled(this.promiseResult);
