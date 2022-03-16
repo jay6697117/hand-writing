@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class MyPromise {
+        // 构造方法
+        constructor(executor) {
+          // 初始化值
+          this._initValue();
+          // 初始化this指向
+          // this._initBind();
+          // 执行传进来的函数
+          // executor(this.resolve, this.reject);
+          executor(this.resolve.bind(this), this.reject.bind(this));
+        }
+
+        //私有方法
+        // _initBind() {
+        //   // 初始化this
+        //   this.resolve = this.resolve.bind(this);
+        //   this.reject = this.reject.bind(this);
+        // }
+
+        //私有方法
+        _initValue() {
+          // 初始化值
+          this.PromiseState = 'pending'; // 状态
+          this.PromiseResult = null; // 终值
+        }
+
+        resolve(value) {
+          if (this.promiseState === 'pending') {
+            // 如果执行resolve，状态变为fulfilled
+            this.PromiseState = 'fulfilled';
+            // 终值为传进来的值
+            this.PromiseResult = value;
+          }
+        }
+
+        reject(reason) {
+          if (this.promiseState === 'pending') {
+            // 如果执行reject，状态变为rejected
+            this.PromiseState = 'rejected';
+            // 终值为传进来的reason
+            this.PromiseResult = reason;
+          }
+        }
+
+        then1(onFullfilled, onRejected) {
+          if (this.promiseState === 'fulfilled') {
+            console.log(' this.PromiseResult', this.PromiseResult);
+            onFullfilled(this.promiseResult);
+          }
+          // if (this.promiseState === 'rejected') {
+          //   onRejected(this.promiseResult);
+          // }
+        }
+      }
+
+      const p = new MyPromise((resolve, reject) => {
+        // console.log('resolve:', resolve);
+        // console.log('reject:', reject);
+        setTimeout(() => {
+          resolve('hello');
+        }, 1000)
+        // resolve('hello');
+      });
+      console.log('p:', p);
+
+      p.then1(res => {
+        console.log('res:', res);
+      });
+    </script>
+  </body>
+</html>
