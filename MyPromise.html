@@ -8,6 +8,8 @@
   </head>
   <body>
     <script>
+      // 进度: 3. 链式调用
+      // https://juejin.cn/post/6994594642280857630#heading-8
       class MyPromise {
         // 构造方法
         constructor(executor) {
@@ -33,6 +35,12 @@
           this.rejectedCbs = [];
         }
 
+        _initCbs() {
+          console.log('_initCbs run');
+          this.fullfilledCbs = [];
+          this.rejectedCbs = [];
+        }
+
         resolve(result) {
           console.log('执行了resolve -- this.promiseState值:', this.promiseState);
           if (this.promiseState === 'pending') {
@@ -43,6 +51,7 @@
             this.fullfilledCbs.forEach(item => {
               item(result);
             });
+            this._initCbs();
           }
         }
 
@@ -56,6 +65,7 @@
             this.rejectedCbs.forEach(item => {
               item(reason);
             });
+            this._initCbs();
           }
         }
 
@@ -91,10 +101,10 @@
           resolve('st 成功 111');
           // reject('st 失败 222');
           // throw 'st throw error 333';
-        }, 2000);
+        }, 3000);
       });
 
-      console.log('p1:', p1);
+      console.log('p1 0:', p1);
 
       p1.then(
         res => {
@@ -104,6 +114,7 @@
           console.log('err:', err);
         }
       );
+      console.log('p1 1:', p1);
     </script>
   </body>
 </html>
