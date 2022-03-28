@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">{{foo}}</div>
+    <hr />
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data() {
+          return {
+            // foo: undefined
+            foo: 0
+          };
+        },
+        mounted() {
+          const app = document.getElementById('app');
+          this.foo = 0;
+          this.$nextTick(() => {
+            // console.log('$nextTick 0:>> ', app.innerHTML);
+            document.write('<h1>0: ' + app.innerHTML + '</h1>');
+          });
+          this.foo = 1;
+          this.$nextTick(() => {
+            // console.log('$nextTick 0:>> ', app.innerHTML);
+            document.write('<h1>1: ' + app.innerHTML + '</h1>');
+          });
+          this.foo = 2;
+          this.$nextTick(() => {
+            // console.log('$nextTick 0:>> ', app.innerHTML);
+            document.write('<h1>2: ' + app.innerHTML + '</h1>');
+          });
+        }
+      });
+    </script>
+    <script>
+      let callbacks = [];
+      let pending = false;
+      function nextTick(cb, ctx) {
+        let _resolve;
+        callbacks.push(function () {
+          if (cb) {
+            try {
+              cb.call(ctx);
+            } catch (e) {
+              handleError(e, ctx, 'nextTick');
+            }
+          } else if (_resolve) {
+            _resolve(ctx);
+          }
+        });
+        if (!pending) {
+          pending = true;
+          timerFunc();
+        }
+        if (!cb && typeof Promise !== 'undefined') {
+          return new Promise(function (resolve) {
+            _resolve = resolve;
+          });
+        }
+      }
+      console.log('callbacks', callbacks)
+    </script>
+  </body>
+</html>
