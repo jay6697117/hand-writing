@@ -8,16 +8,132 @@
   </head>
   <body>
     <script>
+      'use strict';
+      // 1.0
+      // const d1 = new Date();
+      // console.log('d1.getTime():', d1.getTime()); // 1648432072104
+      // // const printTime = d1.getTime.bind(new Date());
+      // const printTime = d1.getTime.bind(d1);
+      // console.log('printTime():', printTime());
+      // printTime();
+
+      // 2.0
+      // let counter = {
+      //   count: 0,
+      //   inc: function () {
+      //     console.log('this:', this);
+      //     this.count++;
+      //   }
+      // };
+      // let obj = {
+      //   count: 100,
+      // }
+      // // const foo = counter.inc.bind(counter);
+      // const foo = counter.inc.bind(obj);
+      // foo();
+      // console.log('counter', counter);
+      // console.log('obj', obj)
+
+      // 3.0
+      // const add = function (x, y) {
+      //   console.log('x:', x);
+      //   console.log('y:', y);
+      //   console.log('this:', this);
+      //   return x * this.m + y * this.n;
+      // };
+      // const obj = {
+      //   m: 2,
+      //   n: 3
+      // };
+
+      // const newAdd = add.bind(obj, 5);
+      // console.log('输出:', newAdd(6));
+
+      // 4.0
+      // function add(x, y) {
+      //   console.log('this:', this);
+      //   console.log('x:', x);
+      //   console.log('y:', y);
+      //   return x + y;
+      // }
+      // let plus5 = add.bind(undefined, 5);
+      // plus5(10); // 15
+
+      // 5.0
+      // const counter = {
+      //   count: 0,
+      //   inc: function () {
+      //     'use strict';
+      //     console.log('this:', this);
+      //     this.count++;
+      //   }
+      // };
+      // function callIt(callback) {
+      //   callback();
+      // }
+      // // callIt(counter.inc.bind(counter));
+      // callIt(counter.inc.bind(counter));
+      // console.log('counter:', counter);
+      // console.log('counter.count:', counter.count);
+
+      // 6.0
+      // const obj = {
+      //   name: '张三',
+      //   times: [1, 2, 3],
+      //   print: function () {
+      //     console.log('this 0:', this);
+      //     this.times.forEach(
+      //       function (n) {
+      //         console.log('---------------');
+      //         console.log('this 1:', this);
+      //         console.log(this.name);
+      //       }.bind(this)
+      //     );
+      //   }
+      // };
+      // obj.print();
+
+      // 7.0
+      // (method) Array<number>.slice(start?: number, end?: number): number[]
+      // console.log([1, 2, 3].slice(0, 1)); // [1]
+      // // 等同于
+      // console.log(Array.prototype.slice.call([1, 2, 3], 0, 1)); // [1]
+
+      // let slice = Function.prototype.call.bind(Array.prototype.slice);
+      // console.log('输出:', slice([1, 2, 3], 0, 2));
+
+      // Array.prototype.slice.call([1, 2, 3], 0, 2)
+
       /*
-      const d = new Date();
-      console.log('d.getTime():', d.getTime()); // 1648432072104
-      const printTime = d.getTime.bind(new Date());
-      console.log('printTime():', printTime());
-      printTime();
+      // 最优秀理解
+      'use strict';
+      function foo() {
+        console.log('this:', this);
+        console.log(this.v);
+      }
+      let obj = { v: 123 };
+
+      console.log(Function.prototype.call.bind(Function.prototype.bind)(foo, obj));
+      console.log(Function.prototype.bind.call(foo, obj));
+      console.log(foo.bind(obj));
+      */
+
+      // 8.0
+      /*
+      // 最佳实践
+      function foo() {
+        console.log('this:', this);
+        console.log(this.v);
+      }
+      let o = { v: 123 };
+      let bind = Function.prototype.call.bind(Function.prototype.bind);
+      bind(foo, o)(); // 123 相当于foo.bind(o)();
       */
     </script>
 
     <script>
+      /*
+      // 手写bind
       Function.prototype.bind = function (context, ...args) {
         if (typeof this !== 'function') {
           throw new TypeError('Bind must be called on a function');
@@ -69,6 +185,7 @@
       showName.bind({ name: '前端胖头鱼' }, 'boy')(100);
 
       //进度：手写bind刚刚开始
+      */
     </script>
   </body>
 </html>
